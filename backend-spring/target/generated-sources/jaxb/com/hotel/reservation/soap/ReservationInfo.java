@@ -1,0 +1,458 @@
+//
+// Ce fichier a été généré par Eclipse Implementation of JAXB, v3.0.0 
+// Voir https://eclipse-ee4j.github.io/jaxb-ri 
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+// Généré le : 2025.12.23 à 08:33:39 PM WEST 
+//
+
+
+package com.hotel.reservation.soap;
+
+import java.math.BigDecimal;
+import javax.xml.datatype.XMLGregorianCalendar;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Classe Java pour ReservationInfo complex type.
+ * 
+ * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * 
+ * <pre>
+ * &lt;complexType name="ReservationInfo"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="clientId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="clientFirstName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="clientLastName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="clientEmail" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="roomId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="roomNumber" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="roomType" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="checkInDate" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
+ *         &lt;element name="checkOutDate" type="{http://www.w3.org/2001/XMLSchema}date"/&gt;
+ *         &lt;element name="numberOfGuests" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="totalPrice" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="specialRequests" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="createdAt" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="updatedAt" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "ReservationInfo", propOrder = {
+    "id",
+    "clientId",
+    "clientFirstName",
+    "clientLastName",
+    "clientEmail",
+    "roomId",
+    "roomNumber",
+    "roomType",
+    "checkInDate",
+    "checkOutDate",
+    "numberOfGuests",
+    "totalPrice",
+    "status",
+    "specialRequests",
+    "createdAt",
+    "updatedAt"
+})
+public class ReservationInfo {
+
+    protected long id;
+    protected long clientId;
+    @XmlElement(required = true)
+    protected String clientFirstName;
+    @XmlElement(required = true)
+    protected String clientLastName;
+    @XmlElement(required = true)
+    protected String clientEmail;
+    protected long roomId;
+    @XmlElement(required = true)
+    protected String roomNumber;
+    @XmlElement(required = true)
+    protected String roomType;
+    @XmlElement(required = true)
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar checkInDate;
+    @XmlElement(required = true)
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar checkOutDate;
+    protected int numberOfGuests;
+    @XmlElement(required = true)
+    protected BigDecimal totalPrice;
+    @XmlElement(required = true)
+    protected String status;
+    protected String specialRequests;
+    @XmlElement(required = true)
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar createdAt;
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar updatedAt;
+
+    /**
+     * Obtient la valeur de la propriété id.
+     * 
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Définit la valeur de la propriété id.
+     * 
+     */
+    public void setId(long value) {
+        this.id = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété clientId.
+     * 
+     */
+    public long getClientId() {
+        return clientId;
+    }
+
+    /**
+     * Définit la valeur de la propriété clientId.
+     * 
+     */
+    public void setClientId(long value) {
+        this.clientId = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété clientFirstName.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getClientFirstName() {
+        return clientFirstName;
+    }
+
+    /**
+     * Définit la valeur de la propriété clientFirstName.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientFirstName(String value) {
+        this.clientFirstName = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété clientLastName.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getClientLastName() {
+        return clientLastName;
+    }
+
+    /**
+     * Définit la valeur de la propriété clientLastName.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientLastName(String value) {
+        this.clientLastName = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété clientEmail.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getClientEmail() {
+        return clientEmail;
+    }
+
+    /**
+     * Définit la valeur de la propriété clientEmail.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientEmail(String value) {
+        this.clientEmail = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété roomId.
+     * 
+     */
+    public long getRoomId() {
+        return roomId;
+    }
+
+    /**
+     * Définit la valeur de la propriété roomId.
+     * 
+     */
+    public void setRoomId(long value) {
+        this.roomId = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété roomNumber.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    /**
+     * Définit la valeur de la propriété roomNumber.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRoomNumber(String value) {
+        this.roomNumber = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété roomType.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRoomType() {
+        return roomType;
+    }
+
+    /**
+     * Définit la valeur de la propriété roomType.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRoomType(String value) {
+        this.roomType = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété checkInDate.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getCheckInDate() {
+        return checkInDate;
+    }
+
+    /**
+     * Définit la valeur de la propriété checkInDate.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setCheckInDate(XMLGregorianCalendar value) {
+        this.checkInDate = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété checkOutDate.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    /**
+     * Définit la valeur de la propriété checkOutDate.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setCheckOutDate(XMLGregorianCalendar value) {
+        this.checkOutDate = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété numberOfGuests.
+     * 
+     */
+    public int getNumberOfGuests() {
+        return numberOfGuests;
+    }
+
+    /**
+     * Définit la valeur de la propriété numberOfGuests.
+     * 
+     */
+    public void setNumberOfGuests(int value) {
+        this.numberOfGuests = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété totalPrice.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    /**
+     * Définit la valeur de la propriété totalPrice.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setTotalPrice(BigDecimal value) {
+        this.totalPrice = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété status.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * Définit la valeur de la propriété status.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setStatus(String value) {
+        this.status = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété specialRequests.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getSpecialRequests() {
+        return specialRequests;
+    }
+
+    /**
+     * Définit la valeur de la propriété specialRequests.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSpecialRequests(String value) {
+        this.specialRequests = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété createdAt.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * Définit la valeur de la propriété createdAt.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setCreatedAt(XMLGregorianCalendar value) {
+        this.createdAt = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété updatedAt.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * Définit la valeur de la propriété updatedAt.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setUpdatedAt(XMLGregorianCalendar value) {
+        this.updatedAt = value;
+    }
+
+}

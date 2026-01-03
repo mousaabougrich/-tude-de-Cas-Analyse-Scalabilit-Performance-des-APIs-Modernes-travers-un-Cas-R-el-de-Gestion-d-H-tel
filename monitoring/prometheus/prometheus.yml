@@ -1,0 +1,48 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'hotel-reservation'
+    replica: 'prometheus'
+
+scrape_configs:
+  # Spring Boot REST & SOAP API
+  - job_name: 'spring-boot-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['backend-spring:8080']
+        labels:
+          service: 'rest-soap-api'
+          app: 'hotel-reservation'
+
+  # GraphQL API
+  - job_name: 'graphql-api'
+    static_configs:
+      - targets: ['backend-graphql:4000']
+        labels:
+          service: 'graphql-api'
+          app: 'hotel-reservation'
+
+  # gRPC API
+  - job_name: 'grpc-api'
+    static_configs:
+      - targets: ['backend-grpc:9090']
+        labels:
+          service: 'grpc-api'
+          app: 'hotel-reservation'
+
+  # PostgreSQL Exporter
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+        labels:
+          service: 'database'
+          app: 'hotel-reservation'
+
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'monitoring'
+          app: 'prometheus'

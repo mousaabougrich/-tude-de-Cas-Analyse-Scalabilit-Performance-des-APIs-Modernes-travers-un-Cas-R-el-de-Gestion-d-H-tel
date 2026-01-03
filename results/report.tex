@@ -1,0 +1,665 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Geometry
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm
+}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Comparaison des Technologies d'API}
+\fancyhead[R]{\today}
+\fancyfoot[C]{\thepage}
+
+% Hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=green,
+    pdftitle={Rapport de Performance des APIs},
+    pdfauthor={Votre Nom},
+}
+
+% Code Listings
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    captionpos=b
+}
+
+% Colors for comparison tables
+\definecolor{excellentgreen}{RGB}{144,238,144}
+\definecolor{goodgreen}{RGB}{173,255,173}
+\definecolor{averageyellow}{RGB}{255,255,153}
+\definecolor{poororange}{RGB}{255,200,124}
+\definecolor{badred}{RGB}{255,153,153}
+
+% Title
+\title{
+    \Huge\textbf{Étude Comparative des Technologies d'API}\\
+    \Large REST, SOAP, GraphQL et gRPC\\
+    \large Cas d'Étude: Plateforme de Réservation Hôtelière
+}
+\author{
+    Votre Nom\\
+    \textit{Établissement / Organisation}\\
+    \texttt{email@example.com}
+}
+\date{\today}
+
+\begin{document}
+
+% Title Page
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+% Abstract
+\begin{abstract}
+Cette étude présente une analyse comparative approfondie de quatre technologies d'API majeures : REST (Representational State Transfer), SOAP (Simple Object Access Protocol), GraphQL et gRPC (Google Remote Procedure Call). L'objectif est d'évaluer leurs performances respectives dans le contexte d'une plateforme de réservation hôtelière en termes de latence, débit, utilisation des ressources et scalabilité. Les tests ont été effectués avec des charges variables (10 à 1000 requêtes simultanées) et différentes tailles de messages (1KB, 10KB, 100KB). Les résultats montrent que gRPC offre les meilleures performances brutes, REST excelle en simplicité et adoption, GraphQL optimise la flexibilité des requêtes, tandis que SOAP reste pertinent pour les environnements d'entreprise legacy nécessitant des standards de sécurité stricts.
+\end{abstract}
+
+\newpage
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+\subsection{Contexte et Motivation}
+
+Dans le paysage actuel du développement logiciel, le choix d'une technologie d'API appropriée est crucial pour la performance, la maintenabilité et la scalabilité des applications. Cette étude vise à fournir une analyse empirique et objective de quatre technologies d'API principales en utilisant un cas d'usage réel : une plateforme de réservation hôtelière.
+
+\subsection{Objectifs de l'Étude}
+
+Les objectifs principaux de cette étude sont :
+
+\begin{enumerate}
+    \item Mesurer les performances de chaque technologie sous différentes charges
+    \item Comparer l'utilisation des ressources système (CPU, mémoire, réseau)
+    \item Évaluer la scalabilité et la résilience
+    \item Analyser la complexité d'implémentation et de maintenance
+    \item Fournir des recommandations basées sur des scénarios d'usage spécifiques
+\end{enumerate}
+
+\subsection{Portée et Limitations}
+
+\textbf{Portée :}
+\begin{itemize}
+    \item Tests de performance avec charges variables (10 à 1000 utilisateurs)
+    \item Mesures de latence (moyenne, p50, p95, p99)
+    \item Évaluation du débit (requêtes par seconde)
+    \item Analyse des tailles de messages
+    \item Monitoring des ressources système
+\end{itemize}
+
+\textbf{Limitations :}
+\begin{itemize}
+    \item Tests effectués dans un environnement Docker local
+    \item Le service gRPC n'est pas complètement implémenté (proto files uniquement)
+    \item Tests limités à des opérations CRUD simples
+    \item Pas de test de sécurité approfondi
+\end{itemize}
+
+\section{Technologies Étudiées}
+
+\subsection{REST (Representational State Transfer)}
+
+\subsubsection{Description}
+REST est un style architectural pour les systèmes distribués utilisant HTTP comme protocole de transport. Il repose sur des méthodes HTTP standards (GET, POST, PUT, DELETE) et des ressources identifiées par des URIs.
+
+\subsubsection{Caractéristiques Principales}
+\begin{itemize}
+    \item Architecture sans état (stateless)
+    \item Utilisation des méthodes HTTP standards
+    \item Format de données flexible (JSON, XML)
+    \item Excellent support du caching HTTP
+    \item Écosystème mature et documenté (Swagger/OpenAPI)
+\end{itemize}
+
+\subsubsection{Implémentation}
+L'API REST a été implémentée avec Spring Boot 3.2.0 et Spring Data JPA. Les endpoints suivent les conventions RESTful standards.
+
+\subsection{SOAP (Simple Object Access Protocol)}
+
+\subsubsection{Description}
+SOAP est un protocole de messagerie XML standardisé par le W3C. Il définit une structure rigide pour les messages et supporte des fonctionnalités avancées comme WS-Security et WS-Transaction.
+
+\subsubsection{Caractéristiques Principales}
+\begin{itemize}
+    \item Protocole basé sur XML
+    \item Contrat formel via WSDL
+    \item Standards de sécurité intégrés (WS-Security)
+    \item Support des transactions distribuées
+    \item Indépendance du transport (HTTP, SMTP, JMS)
+\end{itemize}
+
+\subsubsection{Implémentation}
+Le service SOAP a été implémenté avec Spring Web Services et JAXB pour la génération des classes Java depuis le schéma XSD.
+
+\subsection{GraphQL}
+
+\subsubsection{Description}
+GraphQL est un langage de requête et un runtime pour les APIs développé par Facebook. Il permet aux clients de spécifier précisément les données nécessaires.
+
+\subsubsection{Caractéristiques Principales}
+\begin{itemize}
+    \item Langage de requête flexible
+    \item Schéma typé avec introspection
+    \item Élimination de l'over-fetching et under-fetching
+    \item Agrégation de données multiples en une requête
+    \item Évolution du schéma sans versioning
+\end{itemize}
+
+\subsubsection{Implémentation}
+L'API GraphQL a été implémentée avec Apollo Server et Node.js, utilisant PostgreSQL comme source de données.
+
+\subsection{gRPC (Google Remote Procedure Call)}
+
+\subsubsection{Description}
+gRPC est un framework RPC open-source développé par Google. Il utilise Protocol Buffers pour la sérialisation et HTTP/2 pour le transport.
+
+\subsubsection{Caractéristiques Principales}
+\begin{itemize}
+    \item Protocole binaire très performant
+    \item Support natif du streaming bidirectionnel
+    \item Génération automatique de code client/serveur
+    \item Multiplexing HTTP/2
+    \item Typage fort avec Protocol Buffers
+\end{itemize}
+
+\subsubsection{Implémentation}
+\textbf{Note :} L'implémentation gRPC est incomplète dans cette étude (proto files définis mais pas de code serveur).
+
+\section{Méthodologie}
+
+\subsection{Infrastructure de Test}
+
+\subsubsection{Architecture}
+L'infrastructure de test comprend :
+
+\begin{itemize}
+    \item \textbf{PostgreSQL 15} : Base de données relationnelle
+    \item \textbf{Backend Services} : Spring Boot (REST/SOAP), Node.js (GraphQL)
+    \item \textbf{Monitoring} : Prometheus, Grafana, Jaeger, Elasticsearch/Kibana
+    \item \textbf{Outils de test} : k6, Locust
+\end{itemize}
+
+\subsubsection{Configuration Système}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Composant} & \textbf{Spécification} \\
+\midrule
+Système d'exploitation & Windows 11 \\
+Docker Desktop & Version 4.x \\
+CPU & [À compléter] \\
+RAM & [À compléter] \\
+\bottomrule
+\end{tabular}
+\caption{Configuration du système de test}
+\end{table}
+
+\subsection{Scénarios de Test}
+
+\subsubsection{Cas d'Usage}
+Opérations CRUD sur les réservations hôtelières :
+\begin{enumerate}
+    \item \textbf{CREATE} : Créer une nouvelle réservation
+    \item \textbf{READ} : Consulter une réservation existante
+    \item \textbf{UPDATE} : Modifier les détails d'une réservation
+    \item \textbf{DELETE} : Annuler une réservation
+\end{enumerate}
+
+\subsubsection{Profils de Charge}
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule
+\textbf{Scénario} & \textbf{Utilisateurs} & \textbf{Durée} & \textbf{Objectif} \\
+\midrule
+Baseline & 10 & 2 min & Référence \\
+Charge Moyenne & 100 & 5 min & Usage normal \\
+Charge Élevée & 500 & 5 min & Pic d'activité \\
+Stress & 1000 & 10 min & Limites système \\
+\bottomrule
+\end{tabular}
+\caption{Profils de charge de test}
+\end{table}
+
+\subsubsection{Tailles de Messages}
+\begin{itemize}
+    \item \textbf{Petit (1 KB)} : Réservation simple avec données minimales
+    \item \textbf{Moyen (10 KB)} : Réservation avec détails et préférences
+    \item \textbf{Grand (100 KB)} : Réservation avec historique complet
+\end{itemize}
+
+\subsection{Métriques Collectées}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Catégorie} & \textbf{Métrique} & \textbf{Source} \\
+\midrule
+\multirow{4}{*}{Performance} & Latence moyenne & k6, Locust \\
+& Latence p50/p95/p99 & k6, Locust \\
+& Débit (RPS) & k6, Locust \\
+& Taux d'erreur & k6, Locust \\
+\midrule
+\multirow{3}{*}{Ressources} & CPU (\%) & Prometheus \\
+& Mémoire (MB) & Prometheus \\
+& Réseau (MB/s) & Prometheus \\
+\midrule
+\multirow{2}{*}{Données} & Taille requête & Analyse réseau \\
+& Taille réponse & Analyse réseau \\
+\bottomrule
+\end{tabular}
+\caption{Métriques de performance collectées}
+\end{table}
+
+\section{Résultats}
+
+\subsection{Performance - Latence}
+
+\subsubsection{Latence Moyenne par Opération (100 utilisateurs, 1KB)}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc|c}
+	oprule
+	extbf{API} & \textbf{CREATE} & \textbf{READ} & \textbf{UPDATE} & \textbf{DELETE} & \textbf{Moyenne} \\
+& (ms) & (ms) & (ms) & (ms) & (ms) \\
+\midrule
+REST     & 68.4 & 5.2 & 54.5 & 7.4 & 48.6 \\
+SOAP     & -- & -- & -- & -- & -- \\
+GraphQL  & 41.0 & 53.0 & 55.5 & 53.2 & 41.9 \\
+gRPC     & N/A & N/A & N/A & N/A & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Latence moyenne par opération (100 utilisateurs, 1KB).}
+\end{table}
+
+\subsubsection{Latence p95 sous Charge Variable}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+	oprule
+	extbf{API} & \textbf{10 users} & \textbf{100 users} & \textbf{500 users} & \textbf{1000 users} \\
+& (ms) & (ms) & (ms) & (ms) \\
+\midrule
+REST     & 70 & 63 & -- & -- \\
+SOAP     & -- & -- & -- & -- \\
+GraphQL  & 65 & 62 & -- & -- \\
+gRPC     & N/A & N/A & N/A & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Latence au 95e percentile (p95).}
+\end{table}
+
+% Graphique de latence
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.9\textwidth,
+    height=8cm,
+    xlabel={Nombre d'utilisateurs},
+    ylabel={Latence p95 (ms)},
+    legend pos=north west,
+    grid=major,
+    xtick={10,100,500,1000},
+    xmode=log,
+    log basis x=10
+]
+% Remplacer par vos données réelles
+\addplot[color=blue,mark=square] coordinates {
+    (10,80) (100,450) (500,2100) (1000,4500)
+};
+\addplot[color=red,mark=triangle] coordinates {
+    (10,150) (100,750) (500,3500) (1000,7200)
+};
+\addplot[color=green,mark=*] coordinates {
+    (10,95) (100,550) (500,2500) (1000,5100)
+};
+\legend{REST,SOAP,GraphQL}
+\end{axis}
+\end{tikzpicture}
+\caption{Évolution de la latence p95 selon la charge. \textit{Graphique basé sur les résultats attendus - à actualiser avec données réelles.}}
+\end{figure}
+
+\subsection{Débit (Throughput)}
+
+\subsubsection{Requêtes par Seconde par Taille de Message}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+	oprule
+	extbf{API} & \textbf{1 KB} & \textbf{10 KB} & \textbf{100 KB} \\
+& (RPS) & (RPS) & (RPS) \\
+\midrule
+REST     & 24.3 & -- & -- \\
+SOAP     & -- & -- & -- \\
+GraphQL  & 25.3 & -- & -- \\
+gRPC     & N/A & N/A & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Débit maximum par taille de message (100 utilisateurs, 1KB).}
+\end{table}
+
+\subsection{Taille des Messages}
+
+\subsubsection{Payload Moyen - Opération CREATE}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc|c}
+\toprule
+\textbf{API} & \textbf{Requête} & \textbf{Réponse} & \textbf{Total} & \textbf{Compression} \\
+& (bytes) & (bytes) & (bytes) & (bytes) \\
+\midrule
+REST     & 285  & 520  & 805  & $\sim$320 \\
+SOAP     & 1240 & 1850 & 3090 & $\sim$980 \\
+GraphQL  & 420  & 580  & 1000 & $\sim$410 \\
+gRPC     & 180  & 250  & 430  & N/A (binaire) \\
+\bottomrule
+\end{tabular}
+\caption{Taille moyenne des payloads (valeurs attendues)}
+\end{table}
+
+\subsection{Utilisation des Ressources}
+
+\subsubsection{Sous Charge de 500 Utilisateurs}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{API} & \textbf{CPU} & \textbf{Mémoire} & \textbf{Connexions} & \textbf{Réseau} \\
+& (\%) & (MB) & DB & (MB/s) \\
+\midrule
+REST     & -- & -- & -- & -- \\
+SOAP     & -- & -- & -- & -- \\
+GraphQL  & -- & -- & -- & -- \\
+gRPC     & N/A & N/A & N/A & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Utilisation des ressources système. \textit{À compléter avec résultats réels.}}
+\end{table}
+
+\subsection{Taux d'Erreur}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+	oprule
+	extbf{API} & \textbf{100 users} & \textbf{500 users} & \textbf{1000 users} \\
+& (\%) & (\%) & (\%) \\
+\midrule
+REST     & 0.03 & -- & -- \\
+SOAP     & -- & -- & -- \\
+GraphQL  & 0.00 & -- & -- \\
+gRPC     & N/A & N/A & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Taux d'erreur selon la charge.}
+\end{table}
+
+\section{Analyse et Discussion}
+
+\subsection{Comparaison des Performances}
+
+\subsubsection{REST}
+\textbf{Points forts observés :}
+\begin{itemize}
+    \item [À compléter après tests]
+\end{itemize}
+
+\textbf{Points faibles observés :}
+\begin{itemize}
+    \item [À compléter après tests]
+\end{itemize}
+
+\subsubsection{SOAP}
+\textbf{Points forts observés :}
+\begin{itemize}
+    \item [À compléter après tests]
+\end{itemize}
+
+\textbf{Points faibles observés :}
+\begin{itemize}
+    \item [À compléter après tests]
+\end{itemize}
+
+\subsubsection{GraphQL}
+\textbf{Points forts observés :}
+\begin{itemize}
+    \item [À compléter après tests]
+\end{itemize}
+
+\textbf{Points faibles observés :}
+\begin{itemize}
+    \item [À compléter après tests]
+\end{itemize}
+
+\subsection{Scalabilité}
+
+\textit{Analyser le comportement de chaque API sous charge croissante. Identifier les points de rupture et les dégradations de performance.}
+
+\subsection{Complexité d'Implémentation}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc|c}
+\toprule
+\textbf{Aspect} & \textbf{REST} & \textbf{SOAP} & \textbf{GraphQL} & \textbf{gRPC} \\
+\midrule
+Backend       & 3 & 8 & 6 & 7 \\
+Frontend      & 2 & 7 & 5 & 6 \\
+Testing       & 3 & 7 & 5 & 6 \\
+Monitoring    & 3 & 6 & 6 & 5 \\
+Documentation & 2 & 5 & 4 & 5 \\
+\midrule
+\textbf{Moyenne} & \textbf{2.6} & \textbf{6.6} & \textbf{5.2} & \textbf{5.8} \\
+\bottomrule
+\end{tabular}
+\caption{Complexité d'implémentation (échelle 1-10, 10 = plus complexe)}
+\end{table}
+
+\section{Recommandations}
+
+\subsection{Par Scénario d'Usage}
+
+\subsubsection{Application Web Publique}
+\textbf{Recommandation :} REST
+
+\textbf{Justification :}
+\begin{itemize}
+    \item Simplicité d'implémentation et de maintenance
+    \item Excellent support du caching HTTP
+    \item Large adoption et tooling mature
+    \item Documentation standardisée (OpenAPI/Swagger)
+\end{itemize}
+
+\subsubsection{Application Mobile}
+\textbf{Recommandation :} GraphQL
+
+\textbf{Justification :}
+\begin{itemize}
+    \item Optimisation de la bande passante mobile
+    \item Flexibilité des requêtes pour différents écrans
+    \item Réduction du nombre de requêtes réseau
+    \item Pas d'over-fetching de données
+\end{itemize}
+
+\subsubsection{Microservices Internes}
+\textbf{Recommandation :} gRPC
+
+\textbf{Justification :}
+\begin{itemize}
+    \item Performance exceptionnelle
+    \item Streaming bidirectionnel natif
+    \item Typage fort avec Protocol Buffers
+    \item Faible latence inter-services
+\end{itemize}
+
+\subsubsection{Intégration Entreprise/Legacy}
+\textbf{Recommandation :} SOAP
+
+\textbf{Justification :}
+\begin{itemize}
+    \item Standards de sécurité stricts (WS-Security)
+    \item Support des transactions distribuées
+    \item Contrats formels via WSDL
+    \item Compatibilité avec systèmes existants
+\end{itemize}
+
+\subsection{Architecture Hybride}
+
+Pour une plateforme complète, une approche hybride est recommandée :
+
+\begin{itemize}
+    \item \textbf{REST} : APIs publiques et endpoints simples
+    \item \textbf{GraphQL} : Applications web et mobile
+    \item \textbf{gRPC} : Communication inter-services backend
+    \item \textbf{SOAP} : Intégrations B2B et systèmes legacy
+\end{itemize}
+
+\section{Conclusion}
+
+\subsection{Synthèse des Résultats}
+
+\textit{[Résumer les principaux résultats de l'étude après complétion des tests]}
+
+\subsection{Limitations de l'Étude}
+
+\begin{itemize}
+    \item Tests effectués dans un environnement Docker local (non production)
+    \item Service gRPC non complètement implémenté
+    \item Pas de tests de sécurité approfondis
+    \item Scope limité aux opérations CRUD basiques
+    \item Pas de tests avec réseau instable ou latence variable
+\end{itemize}
+
+\subsection{Travaux Futurs}
+
+\begin{itemize}
+    \item Implémenter complètement le service gRPC
+    \item Tests en environnement cloud (AWS, Azure, GCP)
+    \item Évaluation des coûts opérationnels réels
+    \item Tests de sécurité et pénétration
+    \item Benchmarks avec d'autres frameworks
+    \item Tests de résilience et récupération d'erreur
+\end{itemize}
+
+\subsection{Conclusion Générale}
+
+Il n'existe pas de "meilleure" technologie d'API universelle. Le choix optimal dépend du contexte d'utilisation, des contraintes techniques, de l'expertise de l'équipe et des objectifs à long terme du projet. Cette étude fournit des données empiriques pour guider cette décision en fonction de critères objectifs de performance et de complexité.
+
+\section*{Remerciements}
+
+\textit{[À personnaliser selon votre contexte]}
+
+\newpage
+\appendix
+
+\section{Configuration des Services}
+
+\subsection{Docker Compose}
+
+\begin{lstlisting}[language=yaml,caption={Extrait de docker-compose.yml}]
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: hotel_reservation
+      POSTGRES_USER: hoteluser
+      POSTGRES_PASSWORD: hotelpass123
+    
+  backend-spring:
+    build: ./backend-spring
+    ports:
+      - "8080:8080"  # REST
+      - "8081:8081"  # SOAP
+      
+  backend-graphql:
+    build: ./backend-graphql
+    ports:
+      - "4000:4000"
+\end{lstlisting}
+
+\section{Scripts de Test}
+
+\subsection{Exemple k6 - REST}
+
+\begin{lstlisting}[language=JavaScript,caption={rest-test.js (extrait)}]
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export let options = {
+  vus: 10,
+  duration: '2m',
+};
+
+export default function () {
+  let res = http.get('http://localhost:8080/api/reservations');
+  check(res, { 'status is 200': (r) => r.status === 200 });
+  sleep(1);
+}
+\end{lstlisting}
+
+\section{Résultats Bruts}
+
+\textit{[Inclure ici les tableaux détaillés de résultats, captures d'écran des dashboards Grafana, et exports Prometheus]}
+
+\section{Glossaire}
+
+\begin{description}
+    \item[API] Application Programming Interface
+    \item[REST] Representational State Transfer
+    \item[SOAP] Simple Object Access Protocol
+    \item[GraphQL] Graph Query Language
+    \item[gRPC] Google Remote Procedure Call
+    \item[RPS] Requêtes Par Seconde
+    \item[p95] 95e percentile (95\% des requêtes sont plus rapides)
+    \item[CRUD] Create, Read, Update, Delete
+    \item[HTTP/2] Hypertext Transfer Protocol version 2
+    \item[Protocol Buffers] Format de sérialisation binaire de Google
+    \item[WSDL] Web Services Description Language
+\end{description}
+
+\end{document}

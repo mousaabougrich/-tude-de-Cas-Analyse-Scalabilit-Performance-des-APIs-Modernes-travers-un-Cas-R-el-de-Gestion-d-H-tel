@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bindings version="3.0" xmlns="https://jakarta.ee/xml/ns/jaxb">
+  <!--
+
+Ce fichier a été généré par Eclipse Implementation of JAXB, v3.0.0 
+Voir https://eclipse-ee4j.github.io/jaxb-ri 
+Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+Généré le : 2025.12.23 à 08:33:26 PM WEST 
+
+  -->
+  <bindings scd="x-schema::tns" xmlns:tns="http://reservation.hotel.com/soap">
+    <schemaBindings map="false">
+      <package name="com.hotel.reservation.soap"/>
+    </schemaBindings>
+    <bindings scd="tns:CreateReservationRequest">
+      <class ref="com.hotel.reservation.soap.CreateReservationRequest"/>
+    </bindings>
+    <bindings scd="tns:CreateReservationResponse">
+      <class ref="com.hotel.reservation.soap.CreateReservationResponse"/>
+    </bindings>
+    <bindings scd="~tns:ReservationInfo">
+      <class ref="com.hotel.reservation.soap.ReservationInfo"/>
+    </bindings>
+    <bindings scd="tns:GetReservationRequest">
+      <class ref="com.hotel.reservation.soap.GetReservationRequest"/>
+    </bindings>
+    <bindings scd="tns:GetReservationResponse">
+      <class ref="com.hotel.reservation.soap.GetReservationResponse"/>
+    </bindings>
+    <bindings scd="tns:UpdateReservationRequest">
+      <class ref="com.hotel.reservation.soap.UpdateReservationRequest"/>
+    </bindings>
+    <bindings scd="tns:UpdateReservationResponse">
+      <class ref="com.hotel.reservation.soap.UpdateReservationResponse"/>
+    </bindings>
+    <bindings scd="tns:DeleteReservationRequest">
+      <class ref="com.hotel.reservation.soap.DeleteReservationRequest"/>
+    </bindings>
+    <bindings scd="tns:DeleteReservationResponse">
+      <class ref="com.hotel.reservation.soap.DeleteReservationResponse"/>
+    </bindings>
+  </bindings>
+</bindings>
+
